@@ -6,28 +6,40 @@ import java.awt.event.ActionListener;
 public class Myframe implements ActionListener{
     JButton button;
     JFrame frame;
+    JLabel label;
+    JPanel base;
     Myframe(){
         frame = new JFrame();
-        
+        label = new JLabel("Press the button");
+        label.setFont(new Font("Times New Roman", Font.PLAIN,15));
+        label.setForeground(Color.white);
+        label.setBackground(Color.BLACK);
+        label.setOpaque(true);
+
+        base = new JPanel();
+        base.setSize(250,250);
+        base.setBackground(Color.BLACK);
+        base.add(label);
+
         button = new JButton();
         button.setFocusable(false);
+        button.setSize(100,50);
         button.setText("Press");
         button.addActionListener(this);
 
-        frame.add(button);
+        base.add(button);
+
+        frame.add(base);
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500,500);
         frame.setLayout(new FlowLayout());
-        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==button){
-            frame.dispose();
-            JOptionPane.showMessageDialog(null,
-                    "You pressed the button",
-                    "Button pressed",JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
