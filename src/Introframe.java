@@ -25,10 +25,25 @@ public class Introframe implements ActionListener {
         start.setFont(new Font("Times New Roman", Font.PLAIN,25));
         start.addActionListener(this);
 
+        setres = new JButton("Select resolution");
+        setres.setFocusable(false);
+        setres.setBounds(0,0,200,50);
+        setres.setFont(new Font("Times New Roman", Font.PLAIN,25));
+        setres.addActionListener(this);
+
+        off = new JButton("Quit Program");
+        off.setFocusable(false);
+        off.setBounds(0,0,200,50);
+        off.setFont(new Font("Times New Roman", Font.PLAIN,25));
+        off.addActionListener(this);
+
         hold3 = new JPanel();
-        hold3.setPreferredSize(new Dimension(200,400));
+        hold3.setPreferredSize(new Dimension(400,400));
+        hold3.setLayout(new FlowLayout(FlowLayout.CENTER,0,10));
         hold3.setBackground(Color.WHITE);
-        hold3.add(start);
+        //hold3.add(start);
+        //hold3.add(setres);
+        hold3.add(off);
 
         hold1 = new JPanel();
         hold1.setPreferredSize(new Dimension(100,100));
@@ -56,6 +71,17 @@ public class Introframe implements ActionListener {
         if(e.getSource()==start){
             Inframe.dispose();
             new Mainframe(prefdim);
+        }
+        else if(e.getSource()==off){
+            System.exit(0);
+        }
+        else if(e.getSource()==setres){
+
+            JFrame res = new JFrame("Resolution selector");
+            res.setLayout(null);
+            res.setSize(400,200);
+            res.setVisible(true);
+            res.setResizable(false);
         }
     }
 }
