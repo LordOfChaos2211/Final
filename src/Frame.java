@@ -5,6 +5,6 @@ import javax.swing.border.Border;
 
 public class Frame {
     public static void main(String[]args){
-        new Myframe();
+        new Introframe();
     }
 }
