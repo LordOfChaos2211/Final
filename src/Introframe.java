@@ -38,12 +38,12 @@ public class Introframe implements ActionListener {
         off.addActionListener(this);
 
         hold3 = new JPanel();
-        hold3.setPreferredSize(new Dimension(400,400));
-        hold3.setLayout(new FlowLayout(FlowLayout.CENTER,0,10));
+        hold3.setPreferredSize(new Dimension(200,400));
+        //hold3.setLayout(new FlowLayout(FlowLayout.CENTER,0,10));
         hold3.setBackground(Color.WHITE);
         //hold3.add(start);
-        //hold3.add(setres);
-        hold3.add(off);
+        hold3.add(setres);
+        //hold3.add(off);
 
         hold1 = new JPanel();
         hold1.setPreferredSize(new Dimension(100,100));
@@ -76,12 +76,7 @@ public class Introframe implements ActionListener {
             System.exit(0);
         }
         else if(e.getSource()==setres){
-
-            JFrame res = new JFrame("Resolution selector");
-            res.setLayout(null);
-            res.setSize(400,200);
-            res.setVisible(true);
-            res.setResizable(false);
+            new Resol();
         }
     }
 }
