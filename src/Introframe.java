@@ -12,7 +12,7 @@ public class Introframe implements ActionListener {
     JPanel hold1;
     JPanel hold2;
     JPanel hold3;
-    Dimension prefdim =new Dimension(500,500);
+    static Dimension prefdim =new Dimension(500,500);
     Introframe() {
         ResTi = new JLabel("Please set preferred resolution");
         ResTi.setFont(new Font("Times New Roman", Font.PLAIN,25));
@@ -53,6 +53,7 @@ public class Introframe implements ActionListener {
         hold2 = new JPanel();
         hold2.setBackground(Color.WHITE);
         hold2.add(hold3);
+        hold2.add(start);
         hold3.setLayout(null);
 
         Inframe = new JFrame();
@@ -65,7 +66,10 @@ public class Introframe implements ActionListener {
         Inframe.setTitle("Program Initializer");
 
     }
-
+    public static void setResolution(int num1, int num2){
+        prefdim.setSize(num1,num2);
+        System.out.println("frame set to "+num1+"x"+num2);
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==start){
