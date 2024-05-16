@@ -5,14 +5,27 @@ import java.awt.event.ActionListener;
 
 public class Introframe implements ActionListener {
     JFrame Inframe;
+    JFrame res;
+
     JLabel ResTi;
+
     JButton start;
     JButton setres;
     JButton off;
+
     JPanel hold1;
     JPanel hold2;
     JPanel hold3;
-    static Dimension prefdim =new Dimension(500,500);
+
+    JRadioButton a;
+    JRadioButton b;
+    JRadioButton c;
+    JRadioButton d;
+    JRadioButton g;
+    JRadioButton f;
+
+    Dimension prefdim = new Dimension(500,500);
+
     Introframe() {
         ResTi = new JLabel("Please set preferred resolution");
         ResTi.setFont(new Font("Times New Roman", Font.PLAIN,25));
@@ -66,10 +79,43 @@ public class Introframe implements ActionListener {
         Inframe.setTitle("Program Initializer");
 
     }
-    public static void setResolution(int num1, int num2){
-        prefdim.setSize(num1,num2);
-        System.out.println("frame set to "+num1+"x"+num2);
+    public void getResolution(){
+        a = new JRadioButton("1920x1080");
+        b = new JRadioButton("1360x768");
+        c = new JRadioButton("1560x846");
+        d = new JRadioButton("1280x720");
+        f = new JRadioButton("1440x900");
+        g = new JRadioButton("1600x900");
+
+        a.addActionListener(this);
+        b.addActionListener(this);
+        c.addActionListener(this);
+        d.addActionListener(this);
+        f.addActionListener(this);
+        g.addActionListener(this);
+
+        ButtonGroup reso = new ButtonGroup();
+        reso.add(a);
+        reso.add(b);
+        reso.add(c);
+        reso.add(d);
+        reso.add(f);
+        reso.add(g);
+
+        res = new JFrame("Resolution selector");
+        res.add(a);
+        res.add(b);
+        res.add(c);
+        res.add(d);
+        res.add(f);
+        res.add(g);
+        res.setLayout(new FlowLayout());
+        res.setSize(400,200);
+        res.setVisible(true);
+        res.setResizable(false);
+        res.pack();
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==start){
@@ -80,7 +126,31 @@ public class Introframe implements ActionListener {
             System.exit(0);
         }
         else if(e.getSource()==setres){
-            new Resol();
+         getResolution();
+        }
+        else if(e.getSource()==a){
+            prefdim.setSize(1920,1080);
+            res.dispose();
+        }
+        else if(e.getSource()==b){
+            prefdim.setSize(1360,768);
+            res.dispose();
+        }
+        else if(e.getSource()==c){
+            prefdim.setSize(1560,846);
+            res.dispose();
+        }
+        else if(e.getSource()==d){
+            prefdim.setSize(1280,720);
+            res.dispose();
+        }
+        else if(e.getSource()==f){
+            prefdim.setSize(1440,900);
+            res.dispose();
+        }
+        else if(e.getSource()==g){
+            prefdim.setSize(1600,900);
+            res.dispose();
         }
     }
 }
