@@ -32,6 +32,10 @@ public class Mainframe extends JFrame implements ActionListener {
     JButton pieChart;
     JButton lineGraph;
     JButton barChart;
+    JButton addSlice;
+    JButton addBar;
+    JButton addCoordinate;
+    JButton clearChart;
 
 
     JTextField graphTitle;
@@ -41,12 +45,13 @@ public class Mainframe extends JFrame implements ActionListener {
     JTextField dataPointNameAlt;
     JTextField numValue;
 
+
     DefaultPieDataset generalPieData;
     DefaultCategoryDataset generalBarData;
     DefaultXYDataset generalGraphData;
 
     JFreeChart chartGenerator;
-    ChartPanel chartHolder;
+    ChartPanel chartHolder = new ChartPanel(null);
 
     Mainframe(Dimension dim) {
         mainframe = new JFrame();
@@ -75,15 +80,15 @@ public class Mainframe extends JFrame implements ActionListener {
         dataValue.setVisible(true);
         dataValue.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-        dataName = new JLabel("Data point Name");
+        dataName = new JLabel("Data point Name:");
         dataName.setVisible(true);
         dataName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-        yTitle = new JLabel("Data point Name");
+        yTitle = new JLabel("y-axis Title:");
         yTitle.setVisible(true);
-        yTitle.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        yTitle.setFont(new Font("Times New Roman:", Font.PLAIN, 20));
 
-        dataClass = new JLabel("Data point Name");
+        dataClass = new JLabel("Data Class:");
         dataClass.setVisible(true);
         dataClass.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
@@ -105,26 +110,31 @@ public class Mainframe extends JFrame implements ActionListener {
         barChart.setFocusable(false);
         barChart.addActionListener(this);
 
+        addSlice = new JButton("Add Slice");
+        addSlice.setFocusable(false);
+        addSlice.addActionListener(this);
+
+        addBar = new JButton("Add Bar");
+        addBar.setFocusable(false);
+        addBar.addActionListener(this);
+
+        addCoordinate = new JButton("Add Coordinate");
+        addCoordinate.setFocusable(false);
+        addCoordinate.addActionListener(this);
+
+        clearChart = new JButton("Clear Graph");
+        clearChart.setFocusable(false);
+        clearChart.addActionListener(this);
+
         graphTitle = new JTextField();
-        //graphTitle.setPreferredSize(new Dimension((int) (mainframe.getWidth()*.2),(int) (mainframe.getWidth()*.04)));
-
         xAxisTitle = new JTextField();
-        //xAxisTitle.setPreferredSize(new Dimension((int) (mainframe.getWidth()*.2),(int) (mainframe.getWidth()*.04)));
-
         yAxisTitle = new JTextField();
-        //yAxisTitle.setPreferredSize(new Dimension((int) (mainframe.getWidth()*.2),(int) (mainframe.getWidth()*.04)));
-
         dataPointName = new JTextField();
-        //dataPointName.setPreferredSize(new Dimension((int) (mainframe.getWidth()*.2),(int) (mainframe.getWidth()*.04)));
-
         dataPointNameAlt = new JTextField();
-        //dataPointNameAlt.setPreferredSize(new Dimension((int) (mainframe.getWidth()*.2),(int) (mainframe.getWidth()*.04)));
-
         numValue = new JTextField();
-        //numValue.setPreferredSize(new Dimension((int) (mainframe.getWidth()*.2),(int) (mainframe.getWidth()*.04)));
 
         options = new JPanel();
-        options.setBounds(0, (int) (mainframe.getWidth() * .04), (int) (mainframe.getWidth() * .2), (int) (mainframe.getWidth() * .2));
+        options.setBounds(0, (int) (mainframe.getWidth() * .04), (int) (mainframe.getWidth() * .2), (int) (mainframe.getWidth() * .15));
         options.setBackground(Color.BLACK);
         options.setLayout(new GridLayout(2, 2, 5, 5));
         options.add(scatterPlot);
@@ -133,15 +143,17 @@ public class Mainframe extends JFrame implements ActionListener {
         options.add(barChart);
 
         options2 = new JPanel();
-        options2.setBounds(0, ((int) (mainframe.getWidth() * .04) + (int) (mainframe.getWidth() * .2))
+        options2.setBounds(0, ((int) (mainframe.getWidth() * .04) + (int) (mainframe.getWidth() * .15))
                 , (int) (mainframe.getWidth() * .2), ((int) (mainframe.getHeight()) - (int) (mainframe.getHeight() * .2))
-                        - ((int) (mainframe.getWidth() * .04) + (int) (mainframe.getWidth() * .2)));
+                        - ((int) (mainframe.getWidth() * .04) + (int) (mainframe.getWidth() *.1775)));
         options2.setBackground(Color.WHITE);
         options2.setLayout(new GridLayout(6, 1, 0, 0));
         options2.add(graTitle);
         options2.add(graphTitle);
         options2.add(xTitle);
         options2.add(xAxisTitle);
+        options2.add(yTitle);
+        options2.add(yAxisTitle);
 
         leftPane = new JPanel();
         leftPane.setPreferredSize(new Dimension((int) (mainframe.getWidth() * .2), 100));
@@ -153,10 +165,13 @@ public class Mainframe extends JFrame implements ActionListener {
 
         bottomPane = new JPanel();
         bottomPane.setPreferredSize(new Dimension(100, (int) (mainframe.getHeight() * .2)));
-        bottomPane.setBackground(Color.BLUE);
+        //bottomPane.setBackground(Color.BLUE);
+
 
         content = new JPanel();
-        content.setBackground(Color.GREEN);
+        //content.setBackground(Color.GREEN);
+        content.setLayout(new BorderLayout());
+        content.add(chartHolder);
 
         mainframe.setLayout(new BorderLayout());
         mainframe.add(bottomPane, BorderLayout.SOUTH);
@@ -187,6 +202,52 @@ public class Mainframe extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==pieChart){
+            chartGenerator = ChartFactory.createPieChart(graphTitle.getText(),generalPieData);
+            chartHolder.setChart(chartGenerator);
+            options2.removeAll();
+            options2.add(dataValue);
+            options2.add(numValue);
+            options2.add(dataName);
+            options2.add(dataPointName);
+            options2.add(addSlice);
+            options2.revalidate();
+            options2.repaint();
+            bottomPane.add(clearChart);
+            content.repaint();
+            chartHolder.repaint();
+        }
+        else if(e.getSource()==barChart){
+            chartGenerator = ChartFactory.createBarChart(graphTitle.getText(),xAxisTitle.getText(),yAxisTitle.getText(),generalBarData);
+            chartHolder.setChart(chartGenerator);
+            options2.removeAll();
+            options2.add(dataValue);
+            options2.add(numValue);
+            options2.add(dataName);
+            options2.add(dataPointName);
+            options2.add(dataClass);
+            options2.add(dataPointNameAlt);
+            options2.add(addBar);
+            options2.revalidate();
+            options2.repaint();
+            bottomPane.add(clearChart);
+            content.repaint();
+            chartHolder.repaint();
 
+        }
+        else if(e.getSource()== addSlice){
+            generalPieData.setValue(dataPointName.getText(),Integer.valueOf(numValue.getText()));
+            chartHolder.repaint();
+        }
+        else if (e.getSource()== clearChart){
+            generalPieData.clear();
+            generalBarData.clear();
+            generalGraphData = new DefaultXYDataset();
+            chartHolder.repaint();
+        }
+        else if(e.getSource()==addBar){
+            generalBarData.addValue(Integer.valueOf(numValue.getText()),dataPointNameAlt.getText(),dataPointName.getText());
+            chartHolder.repaint();
+        }
     }
 }
