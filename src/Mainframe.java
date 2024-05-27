@@ -4,11 +4,11 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.*;
 import org.jfree.data.xy.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Mainframe extends JFrame implements ActionListener {
     JFrame mainframe;
@@ -19,10 +19,12 @@ public class Mainframe extends JFrame implements ActionListener {
     JPanel options;
     JPanel options2;
 
-    JLabel label;
+    JLabel choicePrompt;
     JLabel graTitle;
     JLabel xTitle;
+    JLabel xCoordValue;
     JLabel yTitle;
+    JLabel yCoordValue;
     JLabel dataName;
     JLabel dataClass;
     JLabel dataValue;
@@ -35,6 +37,7 @@ public class Mainframe extends JFrame implements ActionListener {
     JButton addSlice;
     JButton addBar;
     JButton addCoordinate;
+    JButton replaceSeries;
     JButton clearChart;
 
 
@@ -44,6 +47,7 @@ public class Mainframe extends JFrame implements ActionListener {
     JTextField dataPointName;
     JTextField dataPointNameAlt;
     JTextField numValue;
+    JTextField numValueAlt;
 
 
     DefaultPieDataset generalPieData;
@@ -52,6 +56,8 @@ public class Mainframe extends JFrame implements ActionListener {
 
     JFreeChart chartGenerator;
     ChartPanel chartHolder = new ChartPanel(null);
+
+    ArrayList<String> graphSeries = new ArrayList<>();
 
     Mainframe(Dimension dim) {
         mainframe = new JFrame();
@@ -62,11 +68,11 @@ public class Mainframe extends JFrame implements ActionListener {
         generalGraphData = new DefaultXYDataset();
         generalPieData = new DefaultPieDataset();
 
-        label = new JLabel("Please choose graph type:");
-        label.setVisible(true);
-        label.setBounds(0, 0, (int) (mainframe.getWidth() * .2), (int) (mainframe.getWidth() * .04));
-        label.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        adjustLabel(label);
+        choicePrompt = new JLabel("Please choose graph type:");
+        choicePrompt.setVisible(true);
+        choicePrompt.setBounds(0, 0, (int) (mainframe.getWidth() * .2), (int) (mainframe.getWidth() * .04));
+        choicePrompt.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        adjustLabel(choicePrompt);
 
         graTitle = new JLabel("Title: ");
         graTitle.setVisible(true);
@@ -91,6 +97,14 @@ public class Mainframe extends JFrame implements ActionListener {
         dataClass = new JLabel("Data Class:");
         dataClass.setVisible(true);
         dataClass.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+
+        xCoordValue = new JLabel("x Values:");
+        xCoordValue.setVisible(true);
+        xCoordValue.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+
+        yCoordValue = new JLabel("y Values:");
+        yCoordValue.setVisible(true);
+        yCoordValue.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
         scatterPlot = new JButton("Scatter Plot");
         scatterPlot.setFocusable(false);
@@ -122,6 +136,10 @@ public class Mainframe extends JFrame implements ActionListener {
         addCoordinate.setFocusable(false);
         addCoordinate.addActionListener(this);
 
+        replaceSeries = new JButton("Add/Replace Dataset");
+        replaceSeries.setFocusable(false);
+        replaceSeries.addActionListener(this);
+
         clearChart = new JButton("Clear Graph");
         clearChart.setFocusable(false);
         clearChart.addActionListener(this);
@@ -132,6 +150,7 @@ public class Mainframe extends JFrame implements ActionListener {
         dataPointName = new JTextField();
         dataPointNameAlt = new JTextField();
         numValue = new JTextField();
+        numValueAlt = new JTextField();
 
         options = new JPanel();
         options.setBounds(0, (int) (mainframe.getWidth() * .04), (int) (mainframe.getWidth() * .2), (int) (mainframe.getWidth() * .15));
@@ -161,7 +180,7 @@ public class Mainframe extends JFrame implements ActionListener {
         leftPane.setBackground(Color.RED);
         leftPane.add(options);
         leftPane.add(options2);
-        leftPane.add(label);
+        leftPane.add(choicePrompt);
 
         bottomPane = new JPanel();
         bottomPane.setPreferredSize(new Dimension(100, (int) (mainframe.getHeight() * .2)));
@@ -199,7 +218,6 @@ public class Mainframe extends JFrame implements ActionListener {
         label.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==pieChart){
@@ -235,6 +253,40 @@ public class Mainframe extends JFrame implements ActionListener {
             chartHolder.repaint();
 
         }
+        else if(e.getSource()==scatterPlot){
+            chartGenerator = ChartFactory.createScatterPlot(graphTitle.getText(),xAxisTitle.getText(),yAxisTitle.getText(),generalGraphData);
+            chartHolder.setChart(chartGenerator);
+            options2.removeAll();
+            options2.add(xCoordValue);
+            options2.add(numValue);
+            options2.add(yCoordValue);
+            options2.add(numValueAlt);
+            options2.add(dataName);
+            options2.add(dataPointName);
+            options2.add(replaceSeries);
+            options2.revalidate();
+            options2.repaint();
+            bottomPane.add(clearChart);
+            content.repaint();
+            chartHolder.repaint();
+        }
+        else if(e.getSource()==lineGraph){
+            chartGenerator = ChartFactory.createXYLineChart(graphTitle.getText(),xAxisTitle.getText(),yAxisTitle.getText(),generalGraphData);
+            chartHolder.setChart(chartGenerator);
+            options2.removeAll();
+            options2.add(xCoordValue);
+            options2.add(numValue);
+            options2.add(yCoordValue);
+            options2.add(numValueAlt);
+            options2.add(dataName);
+            options2.add(dataPointName);
+            options2.add(replaceSeries);
+            options2.revalidate();
+            options2.repaint();
+            bottomPane.add(clearChart);
+            content.repaint();
+            chartHolder.repaint();
+        }
         else if(e.getSource()== addSlice){
             generalPieData.setValue(dataPointName.getText(),Integer.valueOf(numValue.getText()));
             chartHolder.repaint();
@@ -242,11 +294,28 @@ public class Mainframe extends JFrame implements ActionListener {
         else if (e.getSource()== clearChart){
             generalPieData.clear();
             generalBarData.clear();
-            generalGraphData = new DefaultXYDataset();
+            for(int i=0; i<graphSeries.size();i++){
+                generalGraphData.removeSeries(graphSeries.get(i));
+            }
+            graphSeries.clear();
             chartHolder.repaint();
         }
         else if(e.getSource()==addBar){
             generalBarData.addValue(Integer.valueOf(numValue.getText()),dataPointNameAlt.getText(),dataPointName.getText());
+            chartHolder.repaint();
+        }
+        else if(e.getSource()==replaceSeries){
+            String xData = numValue.getText();
+            String yData= numValueAlt.getText();
+            String[] xDataPrc = xData.split(",");
+            String[] yDataPrc = yData.split(",");
+            double[][] processedCoords = new double[2][xDataPrc.length];
+            for(int i=0;i< xDataPrc.length;i++){
+                processedCoords[0][i] = Double.parseDouble(xDataPrc[i]);
+                processedCoords[1][i] = Double.parseDouble(yDataPrc[i]);
+            }
+            graphSeries.add(dataPointName.getText());
+            generalGraphData.addSeries(dataPointName.getText(),processedCoords);
             chartHolder.repaint();
         }
     }
