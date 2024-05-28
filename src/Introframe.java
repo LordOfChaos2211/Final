@@ -51,12 +51,12 @@ public class Introframe implements ActionListener {
         off.addActionListener(this);
 
         hold3 = new JPanel();
-        hold3.setPreferredSize(new Dimension(200,400));
-        //hold3.setLayout(new FlowLayout(FlowLayout.CENTER,0,10));
+        hold3.setSize(new Dimension(400,400));
+        hold3.setLayout(new GridLayout(3,1,0,75));
         hold3.setBackground(Color.WHITE);
-        //hold3.add(start);
+        hold3.add(start);
         hold3.add(setres);
-        //hold3.add(off);
+        hold3.add(off);
 
         hold1 = new JPanel();
         hold1.setPreferredSize(new Dimension(100,100));
@@ -66,8 +66,7 @@ public class Introframe implements ActionListener {
         hold2 = new JPanel();
         hold2.setBackground(Color.WHITE);
         hold2.add(hold3);
-        hold2.add(start);
-        hold3.setLayout(null);
+
 
         Inframe = new JFrame();
         Inframe.setSize(500, 500);
