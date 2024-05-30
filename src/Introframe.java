@@ -24,7 +24,7 @@ public class Introframe implements ActionListener {
     JRadioButton g;
     JRadioButton f;
 
-    Dimension prefdim = new Dimension(500,500);
+    Dimension prefdim = new Dimension(1600,900);
 
     Introframe() {
         ResTi = new JLabel("Please set preferred resolution");

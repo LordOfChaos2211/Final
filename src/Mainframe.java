@@ -379,6 +379,13 @@ public class Mainframe extends JFrame implements ActionListener {
             chartHolder.repaint();
         }
         else if(e.getSource()==resetTitle){
+            generalPieData.clear();
+            generalBarData.clear();
+            for(int i=0; i<graphSeries.size();i++){
+                generalGraphData.removeSeries(graphSeries.get(i));
+            }
+            graphSeries.clear();
+            chartHolder.repaint();
             options2.removeAll();
             options2.add(graTitle);
             options2.add(graphTitle);
@@ -388,6 +395,7 @@ public class Mainframe extends JFrame implements ActionListener {
             options2.add(yAxisTitle);
             options2.revalidate();
             options2.repaint();
+
         }
     }
 }
