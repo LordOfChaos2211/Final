@@ -18,6 +18,8 @@ public class Mainframe extends JFrame implements ActionListener {
     JPanel content;
     JPanel options;
     JPanel options2;
+    JPanel optionsBottom;
+    JPanel instructionsPanel;
 
     JLabel choicePrompt;
     JLabel graTitle;
@@ -28,6 +30,7 @@ public class Mainframe extends JFrame implements ActionListener {
     JLabel dataName;
     JLabel dataClass;
     JLabel dataValue;
+    JLabel instructions;
 
 
     JButton scatterPlot;
@@ -39,6 +42,7 @@ public class Mainframe extends JFrame implements ActionListener {
     JButton addCoordinate;
     JButton replaceSeries;
     JButton clearChart;
+    JButton resetTitle;
 
 
     JTextField graphTitle;
@@ -106,6 +110,12 @@ public class Mainframe extends JFrame implements ActionListener {
         yCoordValue.setVisible(true);
         yCoordValue.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
+        instructions = new JLabel("<html> Instructions: <br> To create a Pie Chart just enter a title for your Pie chart, no need to fill the other areas, for any other charts input the title and " +
+                "whatever the title of the x and y axis. <html>");
+        instructions.setVisible(true);
+        instructions.setFont(new Font("Times New Roman", Font.PLAIN,20));
+        instructions.setForeground(Color.BLACK);
+
         scatterPlot = new JButton("Scatter Plot");
         scatterPlot.setFocusable(false);
         scatterPlot.addActionListener(this);
@@ -114,11 +124,9 @@ public class Mainframe extends JFrame implements ActionListener {
         pieChart.setFocusable(false);
         pieChart.addActionListener(this);
 
-
         lineGraph = new JButton("Line Graph");
         lineGraph.setFocusable(false);
         lineGraph.addActionListener(this);
-
 
         barChart = new JButton("Bar Chart");
         barChart.setFocusable(false);
@@ -144,6 +152,10 @@ public class Mainframe extends JFrame implements ActionListener {
         clearChart.setFocusable(false);
         clearChart.addActionListener(this);
 
+        resetTitle = new JButton("Reset Title/Chart");
+        resetTitle.setFocusable(false);
+        resetTitle.addActionListener(this);
+
         graphTitle = new JTextField();
         xAxisTitle = new JTextField();
         yAxisTitle = new JTextField();
@@ -155,7 +167,7 @@ public class Mainframe extends JFrame implements ActionListener {
         options = new JPanel();
         options.setBounds(0, (int) (mainframe.getWidth() * .04), (int) (mainframe.getWidth() * .2), (int) (mainframe.getWidth() * .15));
         options.setBackground(Color.BLACK);
-        options.setLayout(new GridLayout(2, 2, 5, 5));
+        options.setLayout(new GridLayout(2, 1, 5, 5));
         options.add(scatterPlot);
         options.add(pieChart);
         options.add(lineGraph);
@@ -174,21 +186,34 @@ public class Mainframe extends JFrame implements ActionListener {
         options2.add(yTitle);
         options2.add(yAxisTitle);
 
+        optionsBottom = new JPanel();
+        optionsBottom.setPreferredSize(new Dimension((int) (mainframe.getWidth()*.2),(int) (mainframe.getHeight()*.2)));
+        optionsBottom.setBackground(Color.WHITE);
+        optionsBottom.setLayout(new GridLayout(2,2,5,5));
+
+        instructionsPanel = new JPanel();
+        instructionsPanel.setBackground(Color.WHITE);
+        instructionsPanel.setLayout(new BorderLayout());
+        instructionsPanel.add(instructions,BorderLayout.CENTER);
+
         leftPane = new JPanel();
         leftPane.setPreferredSize(new Dimension((int) (mainframe.getWidth() * .2), 100));
         leftPane.setLayout(null);
-        leftPane.setBackground(Color.RED);
+        leftPane.setBackground(Color.WHITE);
         leftPane.add(options);
         leftPane.add(options2);
         leftPane.add(choicePrompt);
 
         bottomPane = new JPanel();
         bottomPane.setPreferredSize(new Dimension(100, (int) (mainframe.getHeight() * .2)));
-        //bottomPane.setBackground(Color.BLUE);
+        bottomPane.setLayout(new BorderLayout());
+        bottomPane.setBackground(Color.WHITE);
+        bottomPane.add(optionsBottom,BorderLayout.WEST);
+        bottomPane.add(instructionsPanel,BorderLayout.CENTER);
 
 
         content = new JPanel();
-        //content.setBackground(Color.GREEN);
+        content.setBackground(Color.WHITE);
         content.setLayout(new BorderLayout());
         content.add(chartHolder);
 
@@ -231,7 +256,14 @@ public class Mainframe extends JFrame implements ActionListener {
             options2.add(addSlice);
             options2.revalidate();
             options2.repaint();
-            bottomPane.add(clearChart);
+            optionsBottom.add(clearChart);
+            optionsBottom.add(resetTitle);
+            optionsBottom.revalidate();
+            optionsBottom.repaint();
+            instructions.setText("<html>Instructions: <br> Add slices to you pie chart by inputting the number and the name of the slice," +
+                    " if you are unsatisfied with your pie chart you can clear it with the \"clear graph\" button and if you want to change your chart title or change its type click" +
+                    " the button titled \"reset title/chart\". You can save your chart by right clicking it as choosing save <html>");
+            instructionsPanel.repaint();
             content.repaint();
             chartHolder.repaint();
         }
@@ -248,7 +280,15 @@ public class Mainframe extends JFrame implements ActionListener {
             options2.add(addBar);
             options2.revalidate();
             options2.repaint();
-            bottomPane.add(clearChart);
+            optionsBottom.add(clearChart);
+            optionsBottom.add(resetTitle);
+            instructions.setText("<html>Instructions: <br> Add bars to your chart by inputting the the name of the bar and its value, also its type ex: bar name: hammer, bar value: 50" +
+                    ", bar class: construction tools. all fields are required, if you are unsatisfied with your bar chart you can clear it" +
+                    " with the \"clear graph\" button and if you want to change your chart title or change its type click the button titled" +
+                    " \"reset title/chart\". You can save your chart by right clicking it as choosing save <html>");
+            instructionsPanel.repaint();
+            optionsBottom.revalidate();
+            optionsBottom.repaint();
             content.repaint();
             chartHolder.repaint();
 
@@ -266,7 +306,17 @@ public class Mainframe extends JFrame implements ActionListener {
             options2.add(replaceSeries);
             options2.revalidate();
             options2.repaint();
-            bottomPane.add(clearChart);
+            optionsBottom.add(clearChart);
+            optionsBottom.add(resetTitle);
+            instructions.setText("<html>Instructions: <br> to make a scatter plot enter all values of x in your dataset separated by a comma (,) and the same" +
+                    " steps for all y values in the same order as the x values corresponding to their actual coordinate system value" +
+                    ". Please enter all values you want in one submission as you cannot add values to an already added dataset." +
+                    "you can add multiple datasets in the graph each with their own name. if you are unsatisfied with your scatter plot you can clear it" +
+                    " with the \"clear graph\" button and if you want to change your chart title or change its type click the button titled" +
+                    " \"reset title/chart\". You can save your chart by right clicking it as choosing save <html>");
+            instructionsPanel.repaint();
+            optionsBottom.revalidate();
+            optionsBottom.repaint();
             content.repaint();
             chartHolder.repaint();
         }
@@ -283,7 +333,17 @@ public class Mainframe extends JFrame implements ActionListener {
             options2.add(replaceSeries);
             options2.revalidate();
             options2.repaint();
-            bottomPane.add(clearChart);
+            optionsBottom.add(clearChart);
+            optionsBottom.add(resetTitle);
+            instructions.setText("<html>Instructions: <br> to make a line graph enter all values of x in your dataset separated by a comma (,) and the same" +
+                    " steps for all y values in the same order as the x values corresponding to their actual coordinate system value" +
+                    ". Please enter all values you want in one submission as you cannot add values to an already added dataset." +
+                    "you can add multiple datasets in the graph each with their own name. if you are unsatisfied with your line graph you can clear it" +
+                    " with the \"clear graph\" button and if you want to change your chart title or change its type click the button titled" +
+                    " \"reset title/chart\". You can save your chart by right clicking it as choosing save <html>");
+            instructionsPanel.repaint();
+            optionsBottom.revalidate();
+            optionsBottom.repaint();
             content.repaint();
             chartHolder.repaint();
         }
@@ -317,6 +377,17 @@ public class Mainframe extends JFrame implements ActionListener {
             graphSeries.add(dataPointName.getText());
             generalGraphData.addSeries(dataPointName.getText(),processedCoords);
             chartHolder.repaint();
+        }
+        else if(e.getSource()==resetTitle){
+            options2.removeAll();
+            options2.add(graTitle);
+            options2.add(graphTitle);
+            options2.add(xTitle);
+            options2.add(xAxisTitle);
+            options2.add(yTitle);
+            options2.add(yAxisTitle);
+            options2.revalidate();
+            options2.repaint();
         }
     }
 }
